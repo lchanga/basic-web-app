@@ -15,5 +15,27 @@ export default function QueryProcessor(query: string): string {
     return "ashleyl4";
   }
 
+  // Parse "Which of the following numbers is the largest" queries
+  const largestMatch = query.toLowerCase().match(/which of the following numbers is the largest[:\s]+([0-9,\s]+)\??/);
+  if (largestMatch) {
+    // Extract numbers from the matched string
+    const numbersStr = largestMatch[1];
+    const numbers = numbersStr.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+    
+    if (numbers.length > 0) {
+      const largest = Math.max(...numbers);
+      return largest.toString();
+    }
+  }
+
+  // Parse "What is X plus Y?" queries
+  const plusMatch = query.toLowerCase().match(/what is (\d+) plus (\d+)\??/);
+  if (plusMatch) {
+    const num1 = parseInt(plusMatch[1]);
+    const num2 = parseInt(plusMatch[2]);
+    const sum = num1 + num2;
+    return sum.toString();
+  }
+
   return "";
 }
